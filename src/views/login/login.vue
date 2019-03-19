@@ -65,7 +65,6 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.$store.dispatch('Login', this.loginForm).then(res => {
-            console.log(res)
             if (res === 1) {
               this.$router.push({path: '/'})
             } else {

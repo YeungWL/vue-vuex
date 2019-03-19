@@ -16,7 +16,6 @@ const whiteList = ['/login']
 
 // 路由守卫 -- 利用cookie来保持登录状态 还可以用vuex来保持
 router.beforeEach((to, from, next) => {
-  console.log(store.getters.token)
   if (store.getters.token) {
     // 已经登录
     if (to.path === '/login') {
@@ -29,7 +28,7 @@ router.beforeEach((to, from, next) => {
     if (whiteList.indexOf(to.path) !== -1) {
       next()
     } else {
-      next('/login')
+      next({path: '/login'})
     }
   }
 })
