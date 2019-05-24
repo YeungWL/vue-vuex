@@ -3,18 +3,31 @@
     <!-- <div style="height:80px;background:#fff;padding:8px 10px;box-sizing: border-box;">
       <div style="height:100%;background: #ccc;"></div>
     </div> -->
-    <el-menu :default-openeds="openeds"
-             :default-active="activeIndex"
+    <el-menu :default-active="activeIndex"
+             :default-openeds="openeds"
              @select="handleSelectMenu">
-      <el-submenu :index="`${index + 1}`"
+      <el-submenu :index="item.key"
                   v-for="(item, index) in menuList"
+                  v-if="item.display"
                   :key="index">
         <template slot="title"><i :class="item.icon"></i>{{item.title}}</template>
         <el-menu-item-group>
           <el-menu-item v-for="(child, key) in item.children"
                         :key="key"
-                        :index="`${index + 1}-${key + 1}`">{{child}}</el-menu-item>
+                        v-if="!child.children && child.display"
+                        @click="clickMenu(child.path)"
+                        :index="child.key">{{child.title}}</el-menu-item>
         </el-menu-item-group>
+        <el-submenu v-for="(child, key) in item.children"
+                    :key="key"
+                    v-if="child.children && child.display"
+                    :index="child.key">
+          <template slot="title">{{child.title}}</template>
+          <el-menu-item v-for="(childItem, key) in child.children"
+                        :key="key"
+                        v-if="childItem.display"
+                        :index="childItem.key">{{childItem.title}}</el-menu-item>
+        </el-submenu>
       </el-submenu>
     </el-menu>
   </el-aside>
@@ -36,11 +49,15 @@ export default {
     handleSelectMenu (key, keyPath) {
       this.activeIndex = key
       let opened = []
-      opened.push(keyPath[0])
+      opened.push(keyPath[0], keyPath[1])
+      // console.log(key, keyPath, opened)
       this.openeds = opened
-      switch (key) {
-        case '1-1': this.$router.push({ path: '/' }); break
-      }
+      // switch (key) {
+      //   case '1-1': this.$router.push({ path: '/' }); break
+      // }
+    },
+    clickMenu (path) {
+      console.log(path)
     }
   },
   created () {
