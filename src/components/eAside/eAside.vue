@@ -7,7 +7,7 @@
              :default-openeds="openeds"
              @select="handleSelectMenu">
       <el-submenu :index="item.key"
-                  v-for="(item, index) in menuList"
+                  v-for="(item, index) in $t('menu')"
                   v-if="item.display"
                   :key="index">
         <template slot="title"><i :class="item.icon"></i>{{item.title}}</template>
